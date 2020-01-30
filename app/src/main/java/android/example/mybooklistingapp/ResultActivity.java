@@ -1,6 +1,7 @@
 package android.example.mybooklistingapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.app.LoaderManager;
 import android.content.AsyncTaskLoader;
 import android.content.Context;
@@ -21,7 +22,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ResultActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Book>>{
+public class ResultActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Book>> {
     TextView emptyTV;
     ProgressBar pb;
 
@@ -33,9 +34,9 @@ public class ResultActivity extends AppCompatActivity implements LoaderManager.L
 
     private static final String LOG_TAG = ResultActivity.class.getName();
 
-    private static final int BOOK_LOADER_ID =1;
+    private static final int BOOK_LOADER_ID = 1;
 
-    private  static  String book_request_url =  "https://www.googleapis.com/books/v1/volumes?q=";
+    private static final String book_request_url = "https://www.googleapis.com/books/v1/volumes?q=";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +46,8 @@ public class ResultActivity extends AppCompatActivity implements LoaderManager.L
         Intent intent = getIntent();
         query = intent.getStringExtra("search");
 
-
         ConnectivityManager cm =
-                (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+                (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         isConnected = activeNetwork != null &&
@@ -79,19 +79,19 @@ public class ResultActivity extends AppCompatActivity implements LoaderManager.L
         });
 
         LoaderManager loaderManager = getLoaderManager();
-        if (isConnected){
-            loaderManager.initLoader(BOOK_LOADER_ID, null, this);}
-        else {
+        if (isConnected) {
+            loaderManager.initLoader(BOOK_LOADER_ID, null, this);
+        } else {
             pb.setVisibility(View.GONE);
-            emptyTV.setText(R.string.no_connection);}
+            emptyTV.setText(R.string.no_connection);
+        }
     }
 
 
     @Override
     public Loader<List<Book>> onCreateLoader(int i, Bundle bundle) {
-        Log.d(LOG_TAG,  "Loader created");
+        Log.d(LOG_TAG, "Loader created");
         return new BookLoader(ResultActivity.this, book_request_url.concat(query).concat("&key=AIzaSyC_HpBlqlA0Ni6v6zAGVucSWL6xch7tFno"));
-
     }
 
     @Override
@@ -99,10 +99,11 @@ public class ResultActivity extends AppCompatActivity implements LoaderManager.L
         pb.setVisibility(View.GONE);
         Log.d(LOG_TAG, "Loader finished");
         mAdapter.clear();
-        if (books!= null && !books.isEmpty()) {
-               mAdapter.addAll(books);
-        }  emptyTV.setText(R.string.empty);
-
+        if (books != null && !books.isEmpty()) {
+            Log.d(LOG_TAG, "books size "+books.size());
+            mAdapter.addAll(books);
+        }
+        emptyTV.setText(R.string.empty);
     }
 
 

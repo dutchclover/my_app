@@ -21,23 +21,24 @@ public class BookAdapter extends ArrayAdapter<Book> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        View listItemView = convertView;
+        ViewHolder holder;
+        if (convertView == null) {
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.book_list_item, parent, false);
+            holder = new ViewHolder();
+            holder.authorTV = convertView.findViewById(R.id.author);
+            holder.titleTV = convertView.findViewById(R.id.title);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
+        }
+        Book currentBook = getItem(position);
+        holder.titleTV.setText(currentBook.getTitle());
+        holder.authorTV.setText(currentBook.getAuthor());
+        return convertView;
+    }
 
-        if (listItemView == null) {
-            listItemView = LayoutInflater.from(getContext()).inflate(R.layout.book_list_item, parent, false);
-
-            Book currentBook = getItem(position);
-
-            TextView authorTV = (TextView)listItemView.findViewById(R.id.author);
-            String author = currentBook.getAuthor();
-            authorTV.setText(author);
-
-            TextView titleTV = (TextView) listItemView.findViewById(R.id.title);
-            String title = currentBook.getTitle();
-            titleTV.setText(title);
-
-
-
-        }return listItemView;
+    private static class ViewHolder{
+        TextView authorTV;
+        TextView titleTV;
     }
 }

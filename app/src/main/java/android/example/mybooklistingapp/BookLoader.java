@@ -15,7 +15,7 @@ public class BookLoader extends AsyncTaskLoader<List<Book>> {
 
     public BookLoader(Context context, String mUrl) {
         super(context);
-        Log.d(LOG_TAG, "Loader initialized");
+        Log.d(LOG_TAG, "Loader initialized mUrl "+mUrl);
         this.mUrl = mUrl;
     }
 
@@ -23,7 +23,6 @@ public class BookLoader extends AsyncTaskLoader<List<Book>> {
     protected void onStartLoading() {
         Log.d(LOG_TAG, "Loading started");
         forceLoad();
-
     }
 
 
